@@ -20,7 +20,7 @@ RSS_FEEDS = {
 
 
 # ==============================
-# CALCOLO PUNTEGGIO RILEVANZA
+# CALCOLO PUNTEGGIO
 # ==============================
 
 def relevance_score(title, summary):
@@ -51,7 +51,7 @@ def relevance_score(title, summary):
 
 
 # ==============================
-# RACCOLTA ARTICOLI
+# FETCH ARTICOLI
 # ==============================
 
 def fetch_articles():
@@ -68,19 +68,24 @@ def fetch_articles():
             summary = entry.summary if "summary" in entry else ""
             link = entry.link if "link" in entry else ""
 
+            # gestione data pubblicazione
+            if "published" in entry:
+                published = entry.published
+            else:
+                published = ""
+
             score = relevance_score(title, summary)
 
-            # includiamo solo articoli con punteggio sufficiente
             if score >= 5:
                 articles.append({
                     "title": title,
                     "summary": summary,
                     "source": source,
                     "link": link,
+                    "published": published,
                     "score": score
                 })
 
-    # ordina per rilevanza decrescente
     articles = sorted(articles, key=lambda x: x["score"], reverse=True)
 
     return articles
