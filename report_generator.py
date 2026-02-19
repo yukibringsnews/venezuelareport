@@ -57,13 +57,40 @@ report.append(
 
         report.append("\n\nPerché è importante:\n")
 
-        report.append(
-            "L’informazione è stata selezionata in quanto rilevante per la "
-            "stabilità politica, economica o di sicurezza del Venezuela. "
-            "Eventuali conferme multi-fonte rafforzano l’affidabilità del dato. "
-            "Qualora la notizia risulti al momento riportata da un solo outlet, "
-            "essa viene comunque inclusa per monitoraggio evolutivo nei prossimi giorni."
-        )
+full_text = " ".join([a["title"] + " " + a["summary"] for a in articles]).lower()
+
+report.append("\nPerché è importante:\n")
+
+if "sanction" in full_text or "oil" in full_text:
+    report.append(
+        "L’evento ha potenziali implicazioni economiche rilevanti, "
+        "in particolare sul settore energetico venezuelano e sul regime sanzionatorio internazionale."
+    )
+
+elif "military" in full_text or "us navy" in full_text:
+    report.append(
+        "L’elemento militare suggerisce un possibile aumento delle tensioni regionali "
+        "e un rafforzamento della postura di deterrenza nell’area caraibica."
+    )
+
+elif "cartel" in full_text or "narco" in full_text:
+    report.append(
+        "Il coinvolgimento di attori criminali transnazionali indica rischi "
+        "per la sicurezza regionale e possibili implicazioni nei rapporti bilaterali con gli Stati Uniti."
+    )
+
+elif "china" in full_text or "russia" in full_text:
+    report.append(
+        "Il riferimento ad attori extra-regionali segnala un consolidamento "
+        "della dimensione geopolitica del dossier venezuelano."
+    )
+
+else:
+    report.append(
+        "L’informazione contribuisce al monitoraggio della stabilità politica interna "
+        "e delle dinamiche istituzionali venezuelane."
+    )
+
 
         report.append("\n\n")
 
