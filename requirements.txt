@@ -1,0 +1,8 @@
+feedparser
+requests
+scikit-learn
+numpy
+matplotlib
+reportlab
+schedule
+pandas
