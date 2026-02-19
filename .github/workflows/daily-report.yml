@@ -1,0 +1,28 @@
+name: Daily Venezuela Report
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # ogni giorno alle 06:00 UTC
+  workflow_dispatch:      # permette avvio manuale
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run report
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+        run: python app.py
