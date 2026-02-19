@@ -14,8 +14,18 @@ def generate_report(grouped_articles):
         report.append("Nessuna informazione rilevante identificata nelle ultime 24 ore.")
         return "\n".join(report)
 
-    for cluster_id, articles in grouped_articles.items():
-full_text = " ".join([a["title"] + " " + a["summary"] for a in articles]).lower()
+    for for cluster_id, articles in grouped_articles.items():
+
+    full_text = " ".join([a["title"] + " " + a["summary"] for a in articles]).lower()
+
+    venezuela_focus = sum(
+        1 for a in articles
+        if "venezuela" in (a["title"] + " " + a["summary"]).lower()
+    )
+
+    if venezuela_focus < len(articles) / 2:
+        continue
+
 
 # Esclude cluster dove Venezuela non è realmente centrale
 if "venezuela" not in full_text:
