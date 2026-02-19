@@ -1,7 +1,10 @@
 import feedparser
-from datetime import datetime
 
-# Feed RSS funzionanti e pubblici
+
+# ==============================
+# FEED RSS DA MONITORARE
+# ==============================
+
 RSS_FEEDS = {
     "Reuters World": "https://feeds.reuters.com/Reuters/worldNews",
     "AP News World": "https://apnews.com/hub/world-news?outputType=xml",
@@ -15,22 +18,10 @@ RSS_FEEDS = {
     "Carnegie Endowment": "https://carnegieendowment.org/rss.xml"
 }
 
-# Parole chiave Venezuela (ampliabili)
-KEYWORDS = [
-    "venezuela",
-    "maduro",
-    "guaido",
-    "caracas",
-    "pdvsa",
-    "cartel",
-    "narco",
-    "us navy",
-    "sanctions",
-    "oil",
-    "military",
-    "china venezuela",
-    "russia venezuela"
-]
+
+# ==============================
+# CALCOLO PUNTEGGIO RILEVANZA
+# ==============================
 
 def relevance_score(title, summary):
 
@@ -46,8 +37,8 @@ def relevance_score(title, summary):
         "venezuelan": 4,
         "oil": 2,
         "sanctions": 3,
-        "opposition": 2,
-        "election": 3
+        "election": 3,
+        "opposition": 2
     }
 
     score = 0
@@ -59,6 +50,10 @@ def relevance_score(title, summary):
     return score
 
 
+# ==============================
+# RACCOLTA ARTICOLI
+# ==============================
+
 def fetch_articles():
 
     articles = []
@@ -69,18 +64,23 @@ def fetch_articles():
 
         for entry in feed.entries:
 
-            title = entry.title
+            title = entry.title if "title" in entry else ""
             summary = entry.summary if "summary" in entry else ""
+            link = entry.link if "link" in entry else ""
 
             score = relevance_score(title, summary)
 
+            # includiamo solo articoli con punteggio sufficiente
             if score >= 5:
                 articles.append({
                     "title": title,
                     "summary": summary,
                     "source": source,
+                    "link": link,
                     "score": score
                 })
 
-    return articles
+    # ordina per rilevanza decrescente
+    articles = sorted(articles, key=lambda x: x["score"], reverse=True)
 
+    return articles
