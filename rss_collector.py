@@ -80,7 +80,7 @@ def fetch_articles():
 
                 combined_text = f"{title} {summary}"
 
-                if is_relevant(combined_text):
+                if is_relevant(title, summary):
                     collected.append({
                         "title": title,
                         "summary": summary,
