@@ -32,7 +32,7 @@ KEYWORDS = [
     "russia venezuela"
 ]
 
-def def is_relevant(title, summary):
+def is_relevant(title, summary):
     text = (title + " " + summary).lower()
 
     mandatory_terms = [
