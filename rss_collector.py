@@ -32,7 +32,7 @@ KEYWORDS = [
     "russia venezuela"
 ]
 
-def def relevance_score(title, summary):
+def relevance_score(title, summary):
 
     text = (title + " " + summary).lower()
 
