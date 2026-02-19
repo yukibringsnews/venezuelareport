@@ -46,7 +46,7 @@ def job():
 
 
 # Esecuzione giornaliera alle 07:00
-schedule.every().day.at("07:00").do(job)
+job()
 
 
 if __name__ == "__main__":
