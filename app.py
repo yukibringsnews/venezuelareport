@@ -1,7 +1,3 @@
-import schedule
-import time
-from datetime import datetime, timedelta
-
 from database import init_db, save_article
 from rss_collector import fetch_articles
 from clustering import cluster_articles, group_by_cluster
@@ -10,7 +6,7 @@ from pdf_generator import generate_pdf
 from mailer import send_email
 
 
-def job():
+def main():
 
     print("Avvio raccolta articoli...")
 
@@ -22,11 +18,9 @@ def job():
         print("Nessun articolo rilevante trovato.")
         return
 
-    # Clustering semantico
     clustered = cluster_articles(articles)
     grouped = group_by_cluster(clustered)
 
-    # Salvataggio database
     for article in clustered:
         save_article(article)
 
@@ -45,14 +39,6 @@ def job():
     print("Operazione completata.")
 
 
-# Esecuzione giornaliera alle 07:00
-job()
-
-
 if __name__ == "__main__":
+    main()
 
-    print("Servizio avviato...")
-
-    while True:
-        schedule.run_pending()
-        time.sleep(60)
