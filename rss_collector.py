@@ -32,24 +32,31 @@ KEYWORDS = [
     "russia venezuela"
 ]
 
-def is_relevant(title, summary):
+def def relevance_score(title, summary):
+
     text = (title + " " + summary).lower()
 
-    keywords = [
-        "venezuela",
-        "maduro",
-        "caracas",
-        "pdvsa",
-        "opposizione venezuelana",
-        "guyana",
-        "essequibo",
-        "sanzioni",
-        "oil venezuela",
-        "venezuelan"
-    ]
+    keywords_weights = {
+        "venezuela": 5,
+        "maduro": 4,
+        "caracas": 4,
+        "pdvsa": 5,
+        "essequibo": 5,
+        "guyana": 3,
+        "venezuelan": 4,
+        "oil": 2,
+        "sanctions": 3,
+        "opposition": 2,
+        "election": 3
+    }
 
-    return any(k in text for k in keywords)
+    score = 0
 
+    for k, weight in keywords_weights.items():
+        if k in text:
+            score += weight
+
+    return score
 
 
 def fetch_articles():
@@ -67,14 +74,21 @@ def fetch_articles():
 
                 combined_text = f"{title} {summary}"
 
-                if is_relevant(title, summary):
-                    collected.append({
-                        "title": title,
-                        "summary": summary,
-                        "link": link,
-                        "source": source,
-                        "published": published
-                    })
+                for entry in feed.entries:
+
+    title = entry.title
+    summary = entry.summary if "summary" in entry else ""
+
+    score = relevance_score(title, summary)
+
+    if score >= 5:
+        articles.append({
+            "title": title,
+            "summary": summary,
+            "source": source,
+            "score": score
+        })
+
 
         except Exception as e:
             print(f"Errore fonte: {source} - {e}")
