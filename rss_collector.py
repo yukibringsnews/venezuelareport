@@ -35,34 +35,21 @@ KEYWORDS = [
 def is_relevant(title, summary):
     text = (title + " " + summary).lower()
 
-    mandatory_terms = [
+    keywords = [
         "venezuela",
         "maduro",
         "caracas",
-        "pdvsa"
+        "pdvsa",
+        "opposizione venezuelana",
+        "guyana",
+        "essequibo",
+        "sanzioni",
+        "oil venezuela",
+        "venezuelan"
     ]
 
-    geopolitical_terms = [
-        "sanctions",
-        "oil",
-        "military",
-        "cartel",
-        "narco",
-        "us navy",
-        "china",
-        "russia",
-        "election"
-    ]
+    return any(k in text for k in keywords)
 
-    # Deve contenere almeno un termine primario
-    if not any(term in text for term in mandatory_terms):
-        return False
-
-    # E almeno un termine geopolitico rilevante
-    if not any(term in text for term in geopolitical_terms):
-        return False
-
-    return True
 
 
 def fetch_articles():
