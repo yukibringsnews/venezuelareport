@@ -60,37 +60,27 @@ def relevance_score(title, summary):
 
 
 def fetch_articles():
-    collected = []
+
+    articles = []
 
     for source, url in RSS_FEEDS.items():
-        try:
-            feed = feedparser.parse(url)
 
-            for entry in feed.entries:
-                title = entry.get("title", "")
-                summary = entry.get("summary", "")
-                link = entry.get("link", "")
-                published = entry.get("published", datetime.utcnow().isoformat())
+        feed = feedparser.parse(url)
 
-                combined_text = f"{title} {summary}"
+        for entry in feed.entries:
 
-                for entry in feed.entries:
+            title = entry.title
+            summary = entry.summary if "summary" in entry else ""
 
-    title = entry.title
-    summary = entry.summary if "summary" in entry else ""
+            score = relevance_score(title, summary)
 
-    score = relevance_score(title, summary)
+            if score >= 5:
+                articles.append({
+                    "title": title,
+                    "summary": summary,
+                    "source": source,
+                    "score": score
+                })
 
-    if score >= 5:
-        articles.append({
-            "title": title,
-            "summary": summary,
-            "source": source,
-            "score": score
-        })
+    return articles
 
-
-        except Exception as e:
-            print(f"Errore fonte: {source} - {e}")
-
-    return collected
