@@ -15,6 +15,11 @@ def generate_report(grouped_articles):
         return "\n".join(report)
 
     for cluster_id, articles in grouped_articles.items():
+full_text = " ".join([a["title"] + " " + a["summary"] for a in articles]).lower()
+
+# Esclude cluster dove Venezuela non è realmente centrale
+if "venezuela" not in full_text:
+    continue
 
         report.append("=" * 70)
         report.append("\n")
