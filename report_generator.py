@@ -38,9 +38,22 @@ def generate_report(grouped_articles):
         report.append("\nSintesi analitica:\n")
 
         # Sintesi combinata dei riassunti
-        combined_summary = " ".join([a["summary"] for a in articles])
+        key_points = []
 
-        report.append(combined_summary)
+for a in articles:
+    key_points.append(f"- {a['title']} ({a['source']})")
+
+report.append("Elementi chiave emersi:")
+for point in key_points:
+    report.append(point)
+
+report.append("\nAnalisi sintetica:")
+
+report.append(
+    "Le fonti indicano sviluppi rilevanti con impatto potenziale "
+    "sulla stabilità politica, economica o di sicurezza del Venezuela. "
+    "La convergenza o meno delle fonti suggerisce un diverso grado di consolidamento informativo."
+)
 
         report.append("\n\nPerché è importante:\n")
 
